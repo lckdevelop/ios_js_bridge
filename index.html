@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>웹뷰 </title>
+    <script type="text/javascript">
+        window.onload = function() {
+            document.getElementById('send').onclick = function(en) {
+                let input = document.getElementsById('name')
+                alert(input.value)
+                input.value = "";
+                return false
+            }
+        }
+
+        // js에서 네이티브 함수를 호출할 함수
+        function jsToNativeEventCall() {
+            let messageToSend = document.getElementById("messageToSend")
+            const sendData = {message: messageToSend.value}
+
+            try {
+                window.webkit.messageHandlers.callbackHandler.postMessage(sendData)
+                messageToSend.value = "";
+            } catch(err) {
+                alert(err)
+            }
+        }
+        
+        function nativeToJsEventCall(message) {
+            let nativeInput = document.getElementById("native_input")
+            nativeInput.value = message;
+        }
+    </script>
+</head>
+<body>
+    <h2>빈칸을 채우시고 알림 띄우기를 클릭하시면 알림이 띄워집니다.</h2>
+    <p></p>
+    <h2 class="">네이티브에서 호출할 js 함수 이름 showAlert(메세지)</h2>
+    <form method="post">
+        <input type="text" name="name" id="name"/>
+        <input type="submit" name="send" id="send" value="알림 띄우기"/>
+    </form>
+    <p></p>
+    <h2 class="">JS에서 네이티브로 전달</h2>
+
+    <input type="text" placeholder="전달할 내용을 입력하세요." name="messageToSend" id="messageToSend"/>
+    <button onclick="jsToNativeEventCall();">네이티브로 전달</button>
+
+    <h2 class="">네이티브에서 입력한 내용</h2>
+    <input name="native_input" id="native_input" value=""/>
+</body>
+</html>
